@@ -2,39 +2,54 @@ import numpy as np
 import scipy as sp
 import scipy.optimize
 import matplotlib.pyplot as plt
+"""
+class Nodes:
+    def __init__(self, n):
+        self.x = [0, 1]
+        self.y = [0, 0]
+        self.phi = [0, 0]
+        self.conn = [[1, ], [0, ]]
+    def x(k):
+        return np.array([self.x[k]])
+    def y(k):
+        return np.array([self.y[k]])
+    def phi(k):
+        return np.array([self.phi[k]])
+    def connection(k):
+        return self.conn[k]
+    def pos(k):
+        return np.array([self.x[k], self.y[k], self.phi[k]])
 
-### Initial setting: Beam bending case
+class Elements:
+    k = 1;    
+"""
+### Initial setting: Spring element case
 
-n = 3; nv = 2;
-EA = 62; EI = 10;
-L = 1;   nu = 0;
-GA = 0.5*EA/(1+nu);
-kc = (10+10*nu)/(12+11*nu);
-ke = np.array([[EA/L,   0,          0,          -EA/L,  0,          0           ],\
-               [0,      12*EI/L**3, 6*EI/L**2,  0,      -12*EI/L**3,6*EI/L**2   ],\
-               [0,      6*EI/L**2,  4*EI/L,     0,      -6*EI/L**2, 2*EI/L      ],\
-               [-EA/L,  0,          0,          EA/L,   0,          0           ],\
-               [0,      -12*EI/L**3,-6*EI/L**2, 0,      12*EI/L**3, -6*EI/L**2  ],\
-               [0,      6*EI/L**2,  2*EI/L,     0,      -6*EI/L**2, 4*EI/L      ]]);
+def node_pos(x, y, phi, k):
+    return np.array([x[k], y[k], phi[k]]);
 
-ue0 = np.array([0, 0, 0, 1, 0, 0, 2, 0, 0]);
-pert = np.array([0, 0, 0, 0, 0, 0, 0, 0.01, 0]);
+n = 3; n_elem = 2;
+kc = 1;
 
-ue = ue0 + pert;
-print ue
+x0 = np.array([0, 1, 2]); y0 = np.array([0.0, 0.0, 0.0]); phi0 = np.array([0, 0, 0]);
+l0 = np.array([1, 1]);
+n1 = [0, 1]; n2 = [1, 2];
+
+x = np.array([0, 1, 1.8]); y = y0; phi = phi0;
+u = node_pos(x, y, phi, 1);
 
 # Newton-Rhapson Optimization of The Potential Energy
-def PotentialEnergy(u, ue0, nv, ke, L, EA, EI, kc, GA):
+def PotentialEnergy(u, n, n_elem, x0, y0, phi0, l0, kc, n1, n2):
     U = 0;
-    ue = ue0; ue[3:-3] = ue[3:-3] + u;
-    print ue
-    for i in range(nv):
-        fe = np.dot(ke, np.transpose(ue[(i*3):(i*3+6)]));
-        UF = 0.5*(fe[0]**2)*L/EA;
-        UQ = 0.5*(fe[1]*fe[1])*L/kc/GA;
-        UM = 0.5*(fe[2]*fe[2])*L/EI;
-        U = U + UF+UQ+UM;
-        print i, fe, UF, UQ, UM, U
+    x1 = np.array(x0);
+    y1 = np.array(y0);
+    x1[1] = x1[1] + u[0]
+    y1[1] = y1[1] + u[1]
+    print x1, y1
+    for i in range(n_elem):
+        l = np.sqrt((x1[n1[i]]-x1[n2[i]])**2 + (y1[n1[i]]-y1[n2[i]])**2);
+        U = U + .5*kc*(l-l0[i])**2;
+    print U
     return U;
 
-print sp.optimize.minimize(PotentialEnergy, np.zeros(3), args=(ue, nv, ke, L, EA, EI, kc, GA));
+print sp.optimize.minimize(PotentialEnergy, np.array([0.1, 0.1, 0.0]), args=(n, n_elem, x, y, phi, l0, kc, n1, n2));
