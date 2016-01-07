@@ -2,11 +2,21 @@ import numpy as np
 
 class Nodes:
     def __init__(self):
-        self.n = 4;
-        self.x = np.array([0.0, 1.0, 2.0, 2.5]);
-        self.y = np.array([0.0, 0.0, 0.0, 0.0]);
-        self.phi = np.array([0.0, 0.0, 0.0, 0.0]);
-        self.conn = [[1, ], [0, 2], [1, 3], [2, ]];
+        nc = 10;
+        self.n = 100;
+        self.x = np.tile(np.hstack((np.array(range(10)),(np.array(range(10)) - 0.5))), 5);
+        self.y = np.repeat(np.array(range(10))*np.sqrt(3)/2, 10);
+        self.phi = np.zeros(100);
+        self.conn = [];
+        next_node = [-1, 1, -nc-1, -nc, -nc+1, nc-1, nc, nc+1];
+        for i in range(self.n):
+            conn_ = [];
+            for next in next_node:
+                if i+next >= self.n:
+                    continue;
+                if np.linalg.norm(self.pos(i)-self.pos(i+next)) < 1.1:
+                    conn_.append(i+next);
+            self.conn.append(conn_);
 
     def pos(self, k):
         return np.array([self.x[k], self.y[k], self.phi[k]]);
