@@ -51,6 +51,21 @@ node_.u[:node_.nc, 0] = res.x[:node_.nc].transpose();
 for i in range(len(bc_index)):
     node_.posIs(bc_index[i], res.x[i*3+node_.nc:i*3+node_.nc+3]);
 node_.u[-node_.nc:, 0] = res.x[-node_.nc:].transpose();
+
+f = open("result.txt", "w")
+e_l = 0; e_r = 0;
+for i in range(0, node_.n, node_.nc):
+    e_l = e_l + node_.u[i][0]
+    e_r = e_r + node_.u[i+9][0]
+e_l = e_l/node_.nc; e_r = e_r/node_.nc;
+ey = 1-np.sqrt(2.0/3.0);
+nu = ((e_r-e_l)/(node_.nc-1) - 1)/ey
+#print e_l, e_r
+f.write("Poisson's Ratio: " + str(nu) + '\n');
+f.write(str(res))
+f.write(str(node_.u))
+f.close()
+
 plt.plot(node_.u[:, 0], node_.u[:, 1], '.k')
 for i in range(elem_.n):
     plt.plot([node_.u[elem_.node[i][0], 0], node_.u[elem_.node[i][1], 0]], [node_.u[elem_.node[i][0], 1], node_.u[elem_.node[i][1], 1]], 'r')

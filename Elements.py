@@ -2,7 +2,7 @@ import numpy as np
 
 class Elements:
     def __init__(self, node_):
-        self.n = 2581;
+        self.n = (node_.nc-1)*(3*node_.nc-1);
         self.l0 = np.repeat([1.0], self.n);
         self.kc = np.repeat([1.0], self.n);
         self.node = [];
