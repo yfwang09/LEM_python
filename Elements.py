@@ -2,11 +2,11 @@ import numpy as np
 
 class Elements:
     def __init__(self, node_):
-        self.n = 261;
-        self.l0 = np.repeat([1.0], 261);
-        self.kc = np.repeat([1.0], 261);
+        self.n = 2581;
+        self.l0 = np.repeat([1.0], self.n);
+        self.kc = np.repeat([1.0], self.n);
         self.node = [];
-        nc = 10;
+        nc = node_.nc;
         next_node = [1, nc-1, nc, nc+1];
         for i in range(node_.n):
             for next in next_node:

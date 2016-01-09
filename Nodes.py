@@ -2,11 +2,13 @@ import numpy as np
 
 class Nodes:
     def __init__(self):
-        nc = 10;
-        self.n = 100;
-        self.x = np.tile(np.hstack((np.array(range(10)),(np.array(range(10)) - 0.5))), 5);
-        self.y = np.repeat(np.array(range(10))*np.sqrt(3)/2, 10);
-        self.phi = np.zeros(100);
+        self.nc = 30;
+        self.n = 900;
+        nc = 30;
+        x = np.tile(np.hstack((np.array(range(nc)),(np.array(range(nc)) - 0.5))), nc/2);
+        y = np.repeat(np.array(range(nc))*np.sqrt(3)/2, nc);
+        phi = np.zeros(self.n);
+        self.u = np.vstack((x, y, phi)).transpose();
         self.conn = [];
         next_node = [-1, 1, -nc-1, -nc, -nc+1, nc-1, nc, nc+1];
         for i in range(self.n):
@@ -19,9 +21,7 @@ class Nodes:
             self.conn.append(conn_);
 
     def pos(self, k):
-        return np.array([self.x[k], self.y[k], self.phi[k]]);
+        return self.u[k][:];
 
     def posIs (self, k, u):
-        self.x[k] = u[0];
-        self.y[k] = u[1];
-        self.phi[k] = u[2];
+        self.u[k][:] = u;
