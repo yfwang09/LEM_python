@@ -2,7 +2,7 @@ import numpy as np
 
 class Nodes:
     def __init__(self):
-        self.nc = 20;
+        self.nc = 30;
         self.n = self.nc**2;
         nc = self.nc;
         x = np.tile(np.hstack((np.array(range(nc)),(np.array(range(nc)) - 0.5))), nc/2);
