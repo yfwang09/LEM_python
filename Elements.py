@@ -6,7 +6,7 @@ class Elements:
         self.n = (node_.nc-1)*(3*node_.nc-1);
         self.l0 = np.repeat([1.0], self.n);
         self.E = 1.0;
-        self.nu = 0.2;
+        self.nu = 0.6;
         self.D = np.diag([self.E, self.E*self.nu, self.E]);
         self.node = [];
         self.theta0 = [];

@@ -25,12 +25,13 @@ plt.grid(True)
 ey = 0.1;
 node_.u[:,1] = np.repeat(np.array(range(node_.nc))*np.sqrt(3)/2*(1-ey), node_.nc);
 
+k = 4
 #print node_.pos(elem_.node[2][0]), node_.pos(elem_.node[2][1])
 #print node_.u0[elem_.node[2][0]][:], node_.u0[elem_.node[2][1]][:]
-print elem_.du(2)
-print elem_.K(2)
-print elem_.f(2)
-print elem_.Ue(2)
+print elem_.du(k)
+print elem_.K(k)
+print elem_.f(k)
+print elem_.Ue(k)
 
 """
 ### Newton-Rhapson Optimization of The Potential Energy
