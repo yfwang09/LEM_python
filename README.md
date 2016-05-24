@@ -12,3 +12,9 @@ Simple Rectangular Case (Jan 6, 2016):
 
     rectangle discretisized by regular triangles.
     push the y dir from 7.8 to 6.4, Poisson's ratio approximately equal to 0.224
+
+Case of Interface between Different Materials:
+
+    2D, material A and B, 80nm x 65nm with 28nm crack in the middle (160524)
+    build an interface model and contact model
+    
