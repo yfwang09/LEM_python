@@ -2,6 +2,7 @@ import numpy as np
 
 class Nodes:
     def __init__(self):
+        """
         self.nc = 14;
         self.n = self.nc**2;
         nc = self.nc;
@@ -20,6 +21,7 @@ class Nodes:
                 if np.linalg.norm(self.pos(i)-self.pos(i+next)) < 1.1:
                     conn_.append(i+next);
             self.conn.append(conn_);
+        """
 
     def pos (self, k):
         return self.u[k][:];

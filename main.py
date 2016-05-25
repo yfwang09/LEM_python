@@ -5,7 +5,15 @@ import matplotlib.pyplot as plt
 
 import Nodes
 import Elements
+import LEM_input
+import LEM_solver_control
+import LEM_output
 
+LEM_input.read_inputs()
+LEM_solver_control.time_solver()
+
+
+"""
 ### Initial setting: Spring element case
 
 node_ = Nodes.Nodes();
@@ -67,3 +75,4 @@ for i in range(elem_.n):
 plt.grid(True)
 
 plt.show()
+"""
