@@ -1,7 +1,13 @@
 import numpy as np
 
 class Elements:
-    def __init__(self, node_):
+    def __init__(self, n_elements, nodes):
+        self.n = n_elements
+        self._nodes = nodes
+        self._interface = [' '] * n_elements
+        self._conn = [()] * n_elements
+        
+        """
         self.node_ = node_;
         self.n = (node_.nc-1)*(3*node_.nc-1);
         self.l0 = np.repeat([1.0], self.n);
@@ -21,7 +27,13 @@ class Elements:
                     node_i = node_.u0[i][:];
                     node_j = node_.u0[i+next][:];
                     self.theta0.append(np.arctan2(node_j[1]-node_i[1], node_j[0]-node_i[0]))
+        """
 
+    def elementIs (self, nid, node_i, node_j, interface):
+        self._conn[nid] = (node_i, node_j)
+        self._interface[nid] = interface
+        
+    """
     def du (self, n):
         dnode_i = self.node_.displacement(self.node[n][0]);
         dnode_j = self.node_.displacement(self.node[n][1]);
@@ -50,3 +62,4 @@ class Elements:
 
     def Ue (self, n):
         return np.dot(self.f(n), self.du(n));
+    """

@@ -18,7 +18,7 @@ f.write('# An input file for nodes and element information.\n')
 
 print nx, ny
 
-# build up node locations and properties
+# Build up node locations and properties
 
 line_0 = np.array(range(nx)) * d
 line_1 = np.array(range(nx)) * d + d / 2
@@ -39,6 +39,7 @@ n_node = len(node_x)
 
 f.write('# number of nodes\n')
 f.write('# node_ID material x y (z)\n')
+f.write('NODE\n')
 f.write(str(n_node)+'\n')
 for i in range(n_node):
     xi = node_x[i]; yi = node_y[i];
@@ -91,11 +92,34 @@ for i in range(n_node):
 
 # Output of element information
 
-f.write('\n# number of nodes\n')
+f.write('\n# number of elements\n')
 f.write('# elem_ID node_id_i node_id_j interface\n')
+f.write('ELEMENT\n')
 f.write(str(len(elem_list))+'\n')
 for e in elem_list:
     f.write(str(e[0])+' '+str(e[1])+' '+str(e[2]) + ' ' + e[3] + '\n')
+
+# Build up boundary nodes
+
+bd_top = ~(node_y < node_y.max())
+bd_bottom = ~(node_y > node_y.min())
+
+# Output of boundary node list
+
+f.write('\n# number of boundaries\n')
+f.write('# boundary_name boundary_node_number boundary_node_list\n')
+f.write('BOUNDARY\n')
+f.write('2\n')
+f.write('TOP\n')
+f.write(str(np.count_nonzero(bd_top))+'\n')
+for i in range(len(bd_top)):
+    if bd_top[i]:
+        f.write(str(i)+'\n')
+f.write('BOTTOM\n')
+f.write(str(np.count_nonzero(bd_bottom))+'\n')
+for i in range(len(bd_bottom)):
+    if bd_bottom[i]:
+        f.write(str(i)+'\n')
 
 f.close()
 
@@ -117,6 +141,8 @@ for e in elem_list:
         continue
     plt.plot(elem_x, elem_y, color)
 plt.plot(node_x, node_y, 'ko')
+plt.plot(node_x[bd_top], node_y[bd_top], 'go')
+plt.plot(node_x[bd_bottom], node_y[bd_bottom], 'go')
 
 plt.show()
 

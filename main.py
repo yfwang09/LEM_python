@@ -9,8 +9,20 @@ import LEM_input
 import LEM_solver_control
 import LEM_output
 
-LEM_input.read_inputs()
-LEM_solver_control.time_solver()
+nodes, elements, boundary = LEM_input.read_inputs()
+LEM_solver_control.time_solver(nodes, elements, boundary)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 """

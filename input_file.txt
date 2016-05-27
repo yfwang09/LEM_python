@@ -2,6 +2,7 @@
 # An input file for nodes and element information.
 # number of nodes
 # node_ID material x y (z)
+NODE
 1520
 0 A 0.0 0.0
 1 A 2.0 0.0
@@ -1524,8 +1525,9 @@
 1518 B 77.0 64.08587988
 1519 B 79.0 64.08587988
 
-# number of nodes
+# number of elements
 # elem_ID node_id_i node_id_j interface
+ELEMENT
 4405
 0 0 1 A-A
 1 0 40 A-A
@@ -5932,3 +5934,92 @@
 4402 1516 1517 B-B
 4403 1517 1518 B-B
 4404 1518 1519 B-B
+
+# number of boundaries
+# boundary_name boundary_node_number boundary_node_list
+BOUNDARY
+2
+TOP
+40
+1480
+1481
+1482
+1483
+1484
+1485
+1486
+1487
+1488
+1489
+1490
+1491
+1492
+1493
+1494
+1495
+1496
+1497
+1498
+1499
+1500
+1501
+1502
+1503
+1504
+1505
+1506
+1507
+1508
+1509
+1510
+1511
+1512
+1513
+1514
+1515
+1516
+1517
+1518
+1519
+BOTTOM
+40
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39

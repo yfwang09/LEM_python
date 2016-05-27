@@ -1,7 +1,12 @@
 import numpy as np
 
 class Nodes:
-    def __init__(self):
+    def __init__(self, n_nodes):
+        self.n = n_nodes
+        self._u0 = np.zeros((n_nodes, 3))
+        self._u = np.zeros((n_nodes, 3))
+        self._material = [' '] * n_nodes
+
         """
         self.nc = 14;
         self.n = self.nc**2;
@@ -23,11 +28,16 @@ class Nodes:
             self.conn.append(conn_);
         """
 
+    def nodeIs(self, id, x0, mat):
+        self._u0[id][:-1] = np.array(x0)
+        self._u[id][:-1] = np.array(x0)
+        self._material[id] = mat
+
     def pos (self, k):
-        return self.u[k][:];
+        return self._u[k][:];
 
     def posIs (self, k, u):
-        self.u[k][:] = u;
+        self._u[k][:] = u;
 
     def displacement (self, k):
-        return self.u[k][:] - self.u0[k][:];
+        return self._u[k][:] - self._u0[k][:];
