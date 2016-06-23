@@ -10,9 +10,17 @@ import LEM_solver_control
 import LEM_output
 
 nodes, elements, boundary = LEM_input.read_inputs()
-LEM_solver_control.time_solver(nodes, elements, boundary)
+bd_cond = [('TOP', 0, 100, 3.25e-2), ('TOP', 101, -1, 0.0),
+           ('BOTTOM', 0, 100, -3.25e-2), ('BOTTOM', 101, -1, 0.0)]
+# (dt, t_total, output_cycle)
+control_parameters = (2.0e-12, 200, 40)
 
 
+LEM_solver_control.time_solver((nodes, elements,
+                                boundary, bd_cond,
+                                control_parameters))
+
+plt.show()
 
 
 

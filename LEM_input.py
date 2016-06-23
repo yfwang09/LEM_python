@@ -13,7 +13,7 @@ def read_nodes(f):
         line_split = line.split()
         nid = i
         mat = line_split[1]
-        x0 = (float(line_split[2]), float(line_split[3]))
+        x0 = (float(line_split[2]), float(line_split[3]), 0)
         nodes.nodeIs(nid, x0, mat)
     return nodes
 
@@ -36,11 +36,26 @@ def read_boundary(f, nodes):
     for i in range(n_boundary):
         bd_name = f.readline().split()[0]
         n_bd_nodes = int(f.readline().split()[0])
-        bd_nodes = np.array([False] * nodes.n)
+        bd_nodes = []
         for j in range(n_bd_nodes):
-            bd_nodes[int(f.readline().split()[0])] = True
+            bd_nodes.append(int(f.readline().split()[0]))
         boundary[bd_name] = bd_nodes
     return boundary
+
+"""
+def read_boundary_conditions(nodes, elements, boundary):
+    with open('boundary_conditions.txt', 'r') as f:
+        for line in iter(f.readline, ''):
+            if line[0] == '#' or line[0] == '\n':
+                continue
+            if line[0] == '<':
+                if line.split()[0] == '<BC>':
+                    break
+            else:
+                print 'input file form error'
+                break
+    return bd_cond
+"""
 
 def read_inputs():
     print 'reading input files...'
@@ -48,7 +63,7 @@ def read_inputs():
 
     with open('input_file.txt', 'r') as f:
         for line in iter(f.readline, ''):
-            print line[:-1]
+            # print line[:-1]
             if line[0] == '#' or line[0] == '\n':
                 continue
             if line.split()[0] == 'NODE':

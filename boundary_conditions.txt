@@ -1,0 +1,25 @@
+# Boundary Conditions for LEM solver
+
+<BC>
+0 10000
+TOP
+DISPL 1.0e-4
+LINEA 1.0e0
+
+<BC>
+10001 -1
+TOP
+DISPL 1.0e-4
+LINEA 1.0e0
+
+<BC>
+0 10000
+BOTTOM
+DISPL -1.0e-4
+LINEA 1.0e0
+
+<BC>
+10001 -1
+BOTTOM
+DISPL -1.0e-4
+LINEA 1.0e0
