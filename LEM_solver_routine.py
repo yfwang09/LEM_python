@@ -25,16 +25,21 @@ def set_displacement_boundary_condition(t, parameters):
                 #print nodes.pos(i)
             #print nodes.pos_list()[1][bd_nodes]
 
-def set_node_position():
-    pass
+def set_node_position(nodes, dt):
+    for i in range(nodes.n):
+        new_x = nodes.pos(i) + dt * nodes.v(i) + 0.5 * (dt**2) * nodes.a(i)
+        nodes.posIs(i, new_x)
 
-def set_velocity_half_time_step():
-    pass
+def set_velocity_half_time_step(nodes, dt):
+    for i in range(nodes.n):
+        new_v = nodes.v(i) + 0.5 * dt * nodes.a(i)
+        nodes.vIs(i, new_v)
 
-def init_forces_and_stats_variables():
-    pass
+def init_forces_and_stats_variables(nodes):
+    for i in range(nodes.n):
+        nodes.aIs(i, 0)
 
-def force_in_elements():
+def force_in_elements(elems):
     pass
 
 def classify_broken_and_unbroken_elements():

@@ -32,11 +32,10 @@ class Elements:
     def elementIs (self, nid, node_i, node_j, interface):
         self._conn[nid] = (node_i, node_j)
         self._interface[nid] = interface
-        
-    """
+
     def du (self, n):
-        dnode_i = self.node_.displacement(self.node[n][0]);
-        dnode_j = self.node_.displacement(self.node[n][1]);
+        dnode_i = self._nodes.displacement(self.node[n][0]);
+        dnode_j = self._nodes.displacement(self.node[n][1]);
         return np.concatenate((dnode_i, dnode_j));
 
     def K (self, n):
@@ -53,6 +52,7 @@ class Elements:
     def f (self, n):
         #node_i = self.node_.pos(self.node[n][0]);
         #node_j = self.node_.pos(self.node[n][1]);
+        if self._interface[n] == 
         return np.dot(self.K(n), self.du(n));
         #print dnode_i, dnode_j, alpha*180/np.pi, c, s
         #print B
@@ -62,4 +62,4 @@ class Elements:
 
     def Ue (self, n):
         return np.dot(self.f(n), self.du(n));
-    """
+    

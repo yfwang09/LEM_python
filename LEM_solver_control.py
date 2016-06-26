@@ -15,10 +15,10 @@ def time_solver(parameters):
 
     for t in range(t_total):
         LEM_solver_routine.set_displacement_boundary_condition(t, parameters)
-        LEM_solver_routine.set_node_position()
-        LEM_solver_routine.set_velocity_half_time_step()
-        LEM_solver_routine.init_forces_and_stats_variables()
-        LEM_solver_routine.force_in_elements()
+        LEM_solver_routine.set_node_position(nodes, dt)
+        LEM_solver_routine.set_velocity_half_time_step(nodes, dt)
+        LEM_solver_routine.init_forces_and_stats_variables(nodes)
+        LEM_solver_routine.force_in_elements(elements)
         LEM_solver_routine.classify_broken_and_unbroken_elements()
         LEM_solver_routine.nodes_acceleration()
         LEM_solver_routine.set_spheres_from_broken_elements()
