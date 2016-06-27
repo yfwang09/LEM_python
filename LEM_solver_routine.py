@@ -45,8 +45,16 @@ def force_in_elements(elems):
 def classify_broken_and_unbroken_elements():
     pass
 
-def nodes_acceleration():
-    pass
+def nodes_acceleration(nodes, elements):
+    for k in range(elements.n):
+        f_k = elements.f(k)
+        n_vec = np.array([np.cos(elements.theta0[k]), np.sin(elements.theta0[k]), 1])
+        i = elements._conn[k][0]
+        j = elements._conn[k][1]
+        a_i = nodes.a(i)
+        a_j = nodes.a(j)
+        nodes.aIs(i, a_i + f_k[:3])
+        nodes.aIs(j, a_i + f_k[-3:])
 
 def set_spheres_from_broken_elements():
     pass
@@ -58,7 +66,10 @@ def set_forces_boundary_condition():
     pass
 
 def set_acceleration():
+    # mass of node = 1
     pass
 
-def set_velocity():
-    pass
+def set_velocity(dt, nodes):
+    for i in range(nodes.n):
+        nodes.vIs(i, nodes.v(i) + 0.5*dt*nodes.a(i))
+
