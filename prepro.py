@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 width = 80.0
 height = 65.0
-d = 10.0
+d = 20.0
 hd = d*np.sqrt(3)/2;
 
 nx = int(np.ceil(width / d))

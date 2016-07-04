@@ -54,7 +54,7 @@ class Elements:
     def f (self, n):
         #node_i = self.node_.pos(self.node[n][0]);
         #node_j = self.node_.pos(self.node[n][1]);
-        return np.dot(self.K(n), self.du(n));
+        return -np.dot(self.K(n), self.du(n));
         #print dnode_i, dnode_j, alpha*180/np.pi, c, s
         #print B
         #print duc, q

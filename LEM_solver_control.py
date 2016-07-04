@@ -27,6 +27,11 @@ def time_solver(parameters):
             LEM_output.draw_nodes(nodes, boundary)
         if t % 10 == 0:
             print 'time step: ' + str(t)
+            print 'max velocity: ' + str(np.max(nodes._v))
+            for i in range(nodes.n):
+                x_i = nodes.pos(i)
+                a_i = nodes.a(i)
+                plt.plot([x_i[0], x_i[0]+a_i[0]],[x_i[1], x_i[1]+a_i[1]])
 
         LEM_solver_routine.sphere_normal_contact()
 
