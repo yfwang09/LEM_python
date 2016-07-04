@@ -41,20 +41,29 @@ class Elements:
         return np.concatenate((dnode_i, dnode_j));
 
     def K (self, n):
-        alpha = self.theta0[n];
+        alpha = self.theta0[n];#np.arctan2(node_j[1]-node_i[1], node_j[0]-node_i[0])-self.theta0[n];
         c = np.cos(alpha); s = np.sin(alpha);
         e = 0; h = self.l0[n]; t = 1.0; l = h/np.sqrt(3);
-        A = l*t; I = l**3*t/12;
-        B = np.array([[-c, -s, -e, c, s, e], [s, -c, -h/2, -s, c, -h/2],\
-                      [0, 0, np.sqrt(I/A), 0, 0, np.sqrt(I/A)]]);
+        A = l*t; I = 0.2*(l**3)*t/12; E = 1.0;
+        EA = E*A; EI = E*I;
+        T = np.array([[c, s, 0], [-s, c, 0], [0, 0, 1]]);
+        Z = np.zeros((3,3))
+        B = np.vstack((np.hstack((T,Z)),np.hstack((Z,T))))
+        D = np.array([[-EA/l,   0,  0,  EA/l,   0,  0],\
+                      [0, -12*EI/(l**3), -6*EI/(l**2), 0, 12*EI/(l**3), -6*EI/(l**2)],\
+                      [0, -6*EI/(l**2),  -4*EI/l,      0, 6*EI/(l**2),  -2*EI/l],\
+                      [EA/l,   0,  0,  -EA/l,   0,  0],\
+                      [0, 12*EI/(l**3),   6*EI/(l**2), 0, -12*EI/(l**3),6*EI/(l**2)],\
+                      [0, -6*EI/(l**2),  -2*EI/l,      0, 6*EI/(l**2), -4*EI/l]])
         #duc = np.dot(B, np.concatenate((dnode_i, dnode_j)))
         #q = A/h*np.dot(self.D, duc)
-        return A/h*np.dot(np.dot(B.transpose(), self.D), B);
+        #return A/h*np.dot(np.dot(B.transpose(), self.D), B);
+        return np.dot(np.dot(B.transpose(), D), B)
 
     def f (self, n):
         #node_i = self.node_.pos(self.node[n][0]);
         #node_j = self.node_.pos(self.node[n][1]);
-        return -np.dot(self.K(n), self.du(n));
+        return np.dot(self.K(n), self.du(n));
         #print dnode_i, dnode_j, alpha*180/np.pi, c, s
         #print B
         #print duc, q
