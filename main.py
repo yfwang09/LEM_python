@@ -25,27 +25,33 @@ node_.u[:,1] = np.repeat(np.array(range(node_.nc))*np.sqrt(3)/2*(1-ey), node_.nc
 def PotentialEnergy(u, node_, elem_, bc_index):
     U = 0
     node_.u[:node_.nc, 0] = u[:node_.nc].transpose();
+    node_.u[:node_.nc, 2] = u[node_.nc:2*node_.nc].transpose();
     for i in range(len(bc_index)):
-        node_.posIs(bc_index[i], u[i*3+node_.nc:i*3+node_.nc+3]);
-    node_.u[-node_.nc:, 0] = u[-node_.nc:].transpose();
+        node_.posIs(bc_index[i], u[i*3+2*node_.nc:i*3+2*node_.nc+3]);
+    node_.u[-node_.nc:, 0] = u[-2*node_.nc:-node_.nc].transpose();
+    node_.u[-node_.nc:, 2] = u[-node_.nc:].transpose();
     for i in range(elem_.n):
         U += elem_.Ue(i)
     return U;
 
 u0 = np.array([])
+# x and phi of boundary nodes
 u0 = np.append(u0, node_.u[:node_.nc, 0].transpose())
+u0 = np.append(u0, node_.u[:node_.nc, 2].transpose())
 for i in bc_index:
     u0 = np.append(u0, node_.pos(i))
 u0 = np.append(u0, node_.u[-node_.nc:, 0].transpose())
+u0 = np.append(u0, node_.u[-node_.nc:, 2].transpose())
 
 res = sp.optimize.minimize(PotentialEnergy, u0, args=(node_, elem_, bc_index));
 
 ### Visualization
+"""
 node_.u[:node_.nc, 0] = res.x[:node_.nc].transpose();
 for i in range(len(bc_index)):
     node_.posIs(bc_index[i], res.x[i*3+node_.nc:i*3+node_.nc+3]);
 node_.u[-node_.nc:, 0] = res.x[-node_.nc:].transpose();
-
+"""
 f = open("result_"+str(node_.n)+".txt", "w")
 e_l = 0; e_r = 0;
 for i in range(0, node_.n, node_.nc):
