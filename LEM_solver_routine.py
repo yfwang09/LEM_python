@@ -25,6 +25,24 @@ def set_displacement_boundary_condition(t, parameters):
                 #print nodes.pos(i)
             #print nodes.pos_list()[1][bd_nodes]
 
+def is_bd_node(boundary, i):
+    for bd_face in boundary:
+        if i in boundary[bd_face]:
+            return True
+    return False
+
+def PotentialEnergy(u, t, parameters):
+    nodes, elements, boundary, bd_cond, control_parameters = parameters
+    U = 0
+    for i in range(nodes.n):
+        if is_bd_node(boundary, i):
+            nodes.posIs(i, np.array([u[i*3], 0, u[i*3+2]]))
+        else:
+            nodes.posIs(i, u[i*3:i*3+3])
+    for i in range(elements.n):
+        U += elements.Ue(i)
+    return U
+
 def set_node_position(nodes, dt):
     for i in range(nodes.n):
         new_x = nodes.pos(i) + dt * nodes.v(i) + 0.5 * (dt**2) * nodes.a(i)
@@ -54,7 +72,12 @@ def nodes_acceleration(nodes, elements):
         a_i = nodes.a(i)
         a_j = nodes.a(j)
         nodes.aIs(i, a_i + f_k[:3])
-        nodes.aIs(j, a_i + f_k[-3:])
+        nodes.aIs(j, a_j + f_k[-3:])
+    # damping
+    for i in range(nodes.n):
+        v_i = nodes.v(i)
+        a_i = nodes.a(i)
+        nodes.aIs(i, a_i - 0.2*v_i)
 
 def set_spheres_from_broken_elements():
     pass

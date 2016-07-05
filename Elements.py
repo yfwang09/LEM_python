@@ -43,8 +43,8 @@ class Elements:
     def K (self, n):
         alpha = self.theta0[n];#np.arctan2(node_j[1]-node_i[1], node_j[0]-node_i[0])-self.theta0[n];
         c = np.cos(alpha); s = np.sin(alpha);
-        e = 0; h = self.l0[n]; t = 1.0; l = h/np.sqrt(3);
-        A = l*t; I = 0.2*(l**3)*t/12; E = 1.0;
+        e = 0; h = self.l0[n]; t = 1.0; l = h#/np.sqrt(3);
+        A = l*t; I = 0.2*(l**3)*t/12; E = 10.0;
         EA = E*A; EI = E*I;
         T = np.array([[c, s, 0], [-s, c, 0], [0, 0, 1]]);
         Z = np.zeros((3,3))

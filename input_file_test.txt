@@ -1,0 +1,25 @@
+# Output file for prepro_v_0
+# An input file for nodes and element information.
+# number of nodes
+# node_ID material x y (z)
+NODE
+2
+0 A 0.0 0.0
+1 A 0.0 1.0
+
+# number of elements
+# elem_ID node_id_i node_id_j interface
+ELEMENT
+1
+0 0 1 A-A
+
+# number of boundaries
+# boundary_name boundary_node_number boundary_node_list
+BOUNDARY
+2
+TOP
+1
+1
+BOTTOM
+1
+0
