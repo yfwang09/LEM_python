@@ -12,7 +12,7 @@ def time_solver(parameters):
 
     nodes, elements, boundary, bd_cond, control_parameters = parameters
     dt, t_total, output_cycle = control_parameters
-    print parameters
+    print (parameters)
 
     for t in range(t_total):
         LEM_solver_routine.set_displacement_boundary_condition(t, parameters)
@@ -34,12 +34,12 @@ def time_solver(parameters):
         if t % (output_cycle) == 0:
             LEM_output.draw_nodes(nodes, boundary)
         if t % 100 == 0:
-            print 'time step: ' + str(t)
-            print 'max velocity: ' + str(nodes.v(4))#str(np.max(nodes._v))
+            print ('time step: ' + str(t))
+            print ('max velocity: ' + str(nodes.v(8)))#str(np.max(nodes._v))
             for i in range(nodes.n):
                 x_i = nodes.pos(i)
                 v_i = nodes.v(i)
-                plt.plot([x_i[0], x_i[0]+v_i[0]],[x_i[1], x_i[1]+v_i[1]])
+                plt.plot([x_i[0], x_i[0]+10*v_i[0]],[x_i[1], x_i[1]+10*v_i[1]])
         
         LEM_solver_routine.sphere_normal_contact()
 

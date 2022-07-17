@@ -58,7 +58,7 @@ def read_boundary_conditions(nodes, elements, boundary):
 """
 
 def read_inputs():
-    print 'reading input files...'
+    print('reading input files...')
     nodes = ''; elements = ''; boundary = '';
 
     with open('input_file.txt', 'r') as f:
@@ -73,7 +73,7 @@ def read_inputs():
             elif line.split()[0] == 'BOUNDARY':
                 boundary = read_boundary(f, nodes)
             else:
-                print 'input file form error'
+                print('input file form error')
                 break
 
     return (nodes, elements, boundary)

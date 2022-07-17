@@ -77,7 +77,7 @@ def nodes_acceleration(nodes, elements):
     for i in range(nodes.n):
         v_i = nodes.v(i)
         a_i = nodes.a(i)
-        nodes.aIs(i, a_i - 0.2*v_i)
+        nodes.aIs(i, a_i - 0.6*v_i)
 
 def set_spheres_from_broken_elements():
     pass
