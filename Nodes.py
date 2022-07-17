@@ -2,10 +2,10 @@ import numpy as np
 
 class Nodes:
     def __init__(self):
-        self.nc = 30;
+        self.nc = 6;
         self.n = self.nc**2;
         nc = self.nc;
-        x = np.tile(np.hstack((np.array(range(nc)),(np.array(range(nc)) - 0.5))), nc/2);
+        x = np.tile(np.hstack((np.array(range(nc)),(np.array(range(nc)) - 0.5))), nc//2);
         y = np.repeat(np.array(range(nc))*np.sqrt(3)/2, nc);
         phi = np.zeros(self.n);
         self.u = np.vstack((x, y, phi)).transpose();
