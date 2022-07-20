@@ -8,68 +8,32 @@ import Elements
 
 ### Initial setting: Spring element case
 
-node_ = Nodes.Nodes();
-elem_ = Elements.Elements(node_);
-bc_index = range(node_.nc,node_.n-node_.nc);
+node_ = Nodes.Nodes(20, crack=(8, 10))
+elem_ = Elements.Elements(node_)
 
-plt.figure()
-plt.plot(node_.u[:, 0], node_.u[:, 1], '.k')
-for i in range(elem_.n):
-    plt.plot([node_.u[elem_.node[i][0], 0], node_.u[elem_.node[i][1], 0]], [node_.u[elem_.node[i][0], 1], node_.u[elem_.node[i][1], 1]], 'b:')
-plt.grid(True)
+fig, ax = plt.subplots()
+elem_.visualize2D(figax=(fig, ax), show=False, color=':C0')
+node_.visualize2D(figax=(fig, ax), show=False, color='.k')
+fig.savefig('Figure_crack_1.png')
 
-ey = 0.1;
-node_.u[:,1] = np.repeat(np.array(range(node_.nc))*np.sqrt(3)/2*(1-ey), node_.nc);
+# Set up boundary condition (Degrees of freedom)
+dof_index = np.zeros_like(node_.u, dtype=bool)
+interior_node_index = np.isin(np.arange(node_.n), np.arange(node_.nx, node_.n - node_.nx))
+dof_index[interior_node_index, :2] = True                   # all interior nodes are DOFs (x, y coords)
+dof_index[np.logical_not(interior_node_index), 0] = True    # all boundary nodes x are allowed to move
+dof_index[0, 0] = False                                     # anchor point at the lower left
 
-### Newton-Rhapson Optimization of The Potential Energy
-def PotentialEnergy(u, node_, elem_, bc_index):
-    U = 0
-    node_.u[:node_.nc, 0] = u[:node_.nc].transpose();
-    node_.u[:node_.nc, 2] = u[node_.nc:2*node_.nc].transpose();
-    for i in range(len(bc_index)):
-        node_.posIs(bc_index[i], u[i*3+2*node_.nc:i*3+2*node_.nc+3]);
-    node_.u[-node_.nc:, 0] = u[-2*node_.nc:-node_.nc].transpose();
-    node_.u[-node_.nc:, 2] = u[-node_.nc:].transpose();
-    for i in range(elem_.n):
-        U += elem_.Ue(i)
-    return U;
+# Set up initial condition
+ey = -0.1
+node_.u[np.logical_not(interior_node_index), 1] *= (1-ey)
 
-u0 = np.array([])
-# x and phi of boundary nodes
-u0 = np.append(u0, node_.u[:node_.nc, 0].transpose())
-u0 = np.append(u0, node_.u[:node_.nc, 2].transpose())
-for i in bc_index:
-    u0 = np.append(u0, node_.pos(i))
-u0 = np.append(u0, node_.u[-node_.nc:, 0].transpose())
-u0 = np.append(u0, node_.u[-node_.nc:, 2].transpose())
+u0 = node_.u[dof_index].copy()
+res = sp.optimize.minimize(elem_.U_pot, u0, args=(dof_index))
+node_.u[dof_index] = res.x
 
-res = sp.optimize.minimize(PotentialEnergy, u0, args=(node_, elem_, bc_index));
+fig, ax = plt.subplots()
+elem_.visualize2D(figax=(fig, ax), show=False, color='C1')
+node_.visualize2D(figax=(fig, ax), show=False, color='or')
 
-### Visualization
-"""
-node_.u[:node_.nc, 0] = res.x[:node_.nc].transpose();
-for i in range(len(bc_index)):
-    node_.posIs(bc_index[i], res.x[i*3+node_.nc:i*3+node_.nc+3]);
-node_.u[-node_.nc:, 0] = res.x[-node_.nc:].transpose();
-"""
-f = open("result_"+str(node_.n)+".txt", "w")
-e_l = 0; e_r = 0;
-for i in range(0, node_.n, node_.nc):
-    e_l = e_l + node_.u[i][0]
-    e_r = e_r + node_.u[i+node_.nc-1][0]
-e_l = e_l/node_.nc; e_r = e_r/node_.nc;
-#ey = 0.01;
-nu = ((e_r-e_l)/(node_.nc-1) - 1)/ey
-#print e_l, e_r
-f.write("Poisson's Ratio: " + str(nu) + '\n');
-f.write(str(res))
-for i in range(node_.n):
-    f.write(str(node_.pos(i))+'\n')
-f.close()
-
-plt.plot(node_.u[:, 0], node_.u[:, 1], '.k')
-for i in range(elem_.n):
-    plt.plot([node_.u[elem_.node[i][0], 0], node_.u[elem_.node[i][1], 0]], [node_.u[elem_.node[i][0], 1], node_.u[elem_.node[i][1], 1]], 'r')
-plt.grid(True)
-
+fig.savefig('Figure_crack_2.png')
 plt.show()
